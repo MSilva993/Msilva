@@ -29,62 +29,83 @@
 # Preço do produto
 # Quantidade em estoque
 
+# Dicionário para armazenar os produtos
 estoque = {}
 
-print("Empório dos Eletrônicos")
+# Função para exibir o menu
+def exibir_menu():
+    print("___________Empório dos Eletrônicos___________ \n")
+    print("(1) Adicionar produto")
+    print("(2) Atualizar produto")
+    print("(3) Excluir produto")
+    print("(4) Visualizar Estoque")
+    print("(5) Sair \n")
 
-while True:
-    print("Escolha uma Opção:\n(1) Adicionar produto. \n(2) Atualizar produto. \n(3) Excluir produto \n(4) Visualizar Estoque \n(5) Sair \n")
+# Função para adicionar ou atualizar um produto
+def adicionar_ou_atualizar_produto(nome, preco, quantidade):
+    nome = nome.lower()  # Converte o nome do produto para minúsculas
+    estoque[nome] = {"Preço": preco, "Quantidade": quantidade}
+    print(f"Produto {nome} adicionado/atualizado com sucesso! \n")
 
-    Escolha_opcao = int (input("Escolha Opção desejada: "))
-    
-    if Escolha_opcao == 1:
-        Nome_produto = input("Digite nome do Produto: ")
-        Preco = float(input("Digite o Valor do Produto: "))
-        Quantidade = int(input("Digite a quantidade desejada: "))
-        estoque[Nome_produto]= {"Preço": Preco, "Quantidade": Quantidade} 
-        print(f"Produto {Nome_produto} adicionado com sucesso!!! \n")
-
-    elif Escolha_opcao == 2:
-        Nome_produto = input("Escreva o nome do Produto que deseja atualizar: ")
-
-        if Nome_produto in estoque:
-            Preco = float(input("Digite o Valor do Produto: "))
-            Quantidade = int(input("Digite a quantidade desejada: "))
-            estoque[Nome_produto]= {"Preço": Preco, "Quantidade": Quantidade} 
-            print(f"Produto {Nome_produto} foi atualizado")
-        else:
-            print("Produto não existe no estoque")
-
-    elif Escolha_opcao == 3:
-        Nome_produto = input("Nome do Produto que deseja Excluir:  ")
-        if Nome_produto in estoque: 
-            del estoque [Nome_produto]
-            print(f"Produto {Nome_produto} excluído com sucesso!!")
-        else:
-            print(f"Produto {Nome_produto} não existe \n")
-    elif Escolha_opcao == 4:
+# Função para exibir o estoque atual
+def exibir_estoque():
+    if not estoque:
+        print("O estoque está vazio.")
+    else:
         print("Estoque Atual:")
         for produto, detalhes in estoque.items():
-            print(f"Produto: {produto}, Preço: R$ {detalhes ['Preço']}, Quantidade: {detalhes ['Quantidade']}")
+            print(f"Produto: {produto.title()}, Preço: R$ {detalhes['Preço']}, Quantidade: {detalhes['Quantidade']}")
+        print()  # Linha em branco para melhor legibilidade
 
-        while True:
-             Sair = input("Deseja voltar ao Menu inicial? (S/N): ")
-             if Sair.lower() in ["s", "n"]:
-                      if Sair.lower() == "s":
-                            break
-                      else:
-                            print("Fim do Menu!! Obrigado")
-                            
+# Loop principal do programa
+while True:
+    exibir_menu()
     
-    elif Escolha_opcao == 5:
-         print("Fim do Menu \n")
-         break
+    # Verificação do input para evitar erros
+    while True:
+        try:
+            escolha_opcao = int(input("Quais das opções você deseja? "))
+            break  # Sai do loop se a entrada for um número válido
+        except ValueError:
+            print("Entrada inválida. Por favor, insira um número.")
+    
+    if escolha_opcao == 1:
+        nome_produto = input("Digite o nome do produto: ")
+        preco = float(input("Digite o valor do produto: "))
+        quantidade = int(input("Digite a quantidade desejada: "))
+        adicionar_ou_atualizar_produto(nome_produto, preco, quantidade)
 
+    elif escolha_opcao == 2:
+        exibir_estoque()  # Exibir o estoque antes de atualizar
+        nome_produto = input("Escreva o nome do produto que deseja atualizar: ").lower()  # Converte para minúsculas
+        if nome_produto in estoque:
+            preco = float(input("Digite o valor do produto: "))
+            quantidade = int(input("Digite a quantidade desejada: "))
+            adicionar_ou_atualizar_produto(nome_produto, preco, quantidade)
+        else:
+            print("Produto não existe no estoque\n")
 
+    elif escolha_opcao == 3:
+        exibir_estoque()  # Exibir o estoque antes de excluir
+        nome_produto = input("Nome do produto que deseja excluir: ").lower()  # Converte para minúsculas
+        if nome_produto in estoque:
+            confirmacao = input(f"Gostaria de excluir {nome_produto.title()}? (S/N): ").lower()
+            if confirmacao == "s":
+                del estoque[nome_produto]
+                print(f"Produto {nome_produto.title()} excluído com sucesso!\n")
+            else:
+                print("Exclusão cancelada. Produto não foi removido.\n")
+        else:
+            print(f"Produto {nome_produto} não existe\n")
+
+    elif escolha_opcao == 4:
+        exibir_estoque()  # Exibir o estoque na opção 4 também
+        input("Pressione Enter para voltar ao menu principal...")  # Pausa para o usuário visualizar o estoque
+
+    elif escolha_opcao == 5:
+        print("Fim do menu \n")
+        break
 
     else:
-      print("Opção Invalida \n") 
-
-
+        print("Opção inválida\n")
 

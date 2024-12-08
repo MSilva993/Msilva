@@ -108,4 +108,3 @@ while True:
 
     else:
         print("Opção inválida\n")
-

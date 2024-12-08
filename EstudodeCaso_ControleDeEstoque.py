@@ -1,15 +1,5 @@
 # Desenvolvendo um Sistema de Controle de Estoque com Python
 
-# O sistema deve ser capaz de adicionar novos produtos,
-# atualizar produtos existentes e visualizar o estoque, além de fornecer funcionalidades
-# adicionais
-
-# Implemente um menu de opções para o usuário, permitindo que ele selecione
-# diferentes funcionalidades do sistema.
-
-# Inclua as opções de adicionar produto, atualizar produto, excluir produto, 
-# visualizar estoque e sair do sistema.
-
 # 1 - Adicionar produto, o sistema deve solicitar as seguintes informações:
 # Nome do produto
 # Preço do produto

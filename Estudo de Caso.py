@@ -87,7 +87,7 @@ while True:
 
     elif escolha_opcao == 3:
         exibir_estoque()  # Exibir o estoque antes de excluir
-        nome_produto = input("Nome do produto que deseja excluir: ").lower()  # Converte para minúsculas
+        nome_produto = input("Nome do produto que deseja excluir: ").lower()
         if nome_produto in estoque:
             confirmacao = input(f"Gostaria de excluir {nome_produto.title()}? (S/N): ").lower()
             if confirmacao == "s":

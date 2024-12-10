@@ -16,8 +16,9 @@ def exibir_menu_coordenador():
     print("(2) Atualizar Eventos")
     print("(3) Visualizar Eventos")
     print("(4) Visualizar Inscritos")
-    print("(5) Excluir Eventos")
-    print("(6) Voltar ao Menu Principal \n")
+    print("(5) Cancelar Evento")
+    print("(6) Excluir Eventos")
+    print("(7) Voltar ao Menu Principal \n")
 
 # Função para cadastrar novos eventos
 def cadastrar_eventos():
@@ -55,58 +56,65 @@ def obter_evento_por_indice(indice):
 def inscrever_aluno():
     exibir_evento()
     if evento:
-        indice_evento = int(input("Digite o número do evento em que deseja se inscrever: ")) - 1
-        nome_evento = obter_evento_por_indice(indice_evento)
-        if nome_evento:
-            nome_aluno = input("Digite o nome do aluno: ")
-            if evento[nome_evento]["Inscritos"] < evento[nome_evento]["Numero Participantes"]:
-                if nome_evento in inscricoes:
-                    inscricoes[nome_evento].append(nome_aluno)
-                else:
-                    inscricoes[nome_evento] = [nome_aluno]
-                evento[nome_evento]["Inscritos"] += 1
-                print(f"Aluno {nome_aluno} inscrito com sucesso no evento {nome_evento}!\n")
-            else:
-                print("Não há vagas disponíveis para este evento.\n")
-        else:
-            print("Evento não encontrado. \n")
-
-# Função para exibir inscritos em um evento
-def exibir_inscritos():
-    exibir_evento()
-    indice_evento = int(input("Digite o número do evento para visualizar os inscritos: ")) - 1
-    nome_evento = obter_evento_por_indice(indice_evento)
-    if nome_evento:
-        if nome_evento in inscricoes and inscricoes[nome_evento]:
-            print(f"Inscritos no evento {nome_evento.title()}:")
-            for nome_aluno in inscricoes[nome_evento]:
-                print(f"- {nome_aluno}")
-        else:
-            print(f"Sem inscritos no evento {nome_evento.title()}.\n")
-    else:
-        print("Evento não encontrado. \n")
-
-# Função para atualizar eventos existentes
-def atualizar_eventos():
-    if not evento:
-        print("Sem eventos disponíveis para atualização.")
-        input("Pressione Enter para voltar ao menu dos coordenadores...")
-    else:
-        exibir_evento()
         try:
-            indice_evento = int(input("Digite o número do evento que deseja atualizar: ")) - 1
+            indice_evento = int(input("Digite o número do evento em que deseja se inscrever: ")) - 1
             nome_evento = obter_evento_por_indice(indice_evento)
             if nome_evento:
-                data_evento = input("Digite nova data do Evento: ")
-                numero_participantes = int(input("Digite o novo número de participantes: "))
-                evento[nome_evento]["Data Evento"] = data_evento
-                evento[nome_evento]["Numero Participantes"] = numero_participantes
-                print(f"Evento {nome_evento} atualizado com sucesso! \n")
+                nome_aluno = input("Digite o nome do aluno: ")
+                if evento[nome_evento]["Inscritos"] < evento[nome_evento]["Numero Participantes"]:
+                    if nome_evento in inscricoes:
+                        inscricoes[nome_evento].append(nome_aluno)
+                    else:
+                        inscricoes[nome_evento] = [nome_aluno]
+                    evento[nome_evento]["Inscritos"] += 1
+                    print(f"Aluno {nome_aluno} inscrito com sucesso no evento {nome_evento}!\n")
+                else:
+                    print("Não há vagas disponíveis para este evento.\n")
             else:
                 print("Evento não encontrado. \n")
         except ValueError:
             print("Entrada inválida. Por favor, insira um número válido.")
-        input("Pressione Enter para voltar ao menu dos coordenadores...")
+
+# Função para exibir inscritos em um evento
+def exibir_inscritos():
+    exibir_evento()
+    try:
+        indice_evento = int(input("Digite o número do evento para visualizar os inscritos: ")) - 1
+        nome_evento = obter_evento_por_indice(indice_evento)
+        if nome_evento:
+            if nome_evento in inscricoes and inscricoes[nome_evento]:
+                print(f"Inscritos no evento {nome_evento.title()}:")
+                for nome_aluno in inscricoes[nome_evento]:
+                    print(f"- {nome_aluno}")
+            else:
+                print(f"Sem inscritos no evento {nome_evento.title()}.\n")
+        else:
+            print("Evento não encontrado. \n")
+    except ValueError:
+        print("Entrada inválida. Por favor, insira um número válido.")
+
+# Função para cancelar eventos existentes
+def cancelar_eventos():
+    if not evento:
+        print("Sem eventos disponíveis para cancelamento.")
+    else:
+        exibir_evento()
+        try:
+            indice_evento = int(input("Digite o número do evento que deseja cancelar: ")) - 1
+            nome_evento = obter_evento_por_indice(indice_evento)
+            if nome_evento:
+                confirmacao = input(f"Tem certeza que deseja cancelar o evento {nome_evento.title()}? (s/n): ").lower()
+                if confirmacao == 's':
+                    del evento[nome_evento]
+                    if nome_evento in inscricoes:
+                        del inscricoes[nome_evento]
+                    print(f"Evento {nome_evento} cancelado com sucesso! \n")
+                else:
+                    print("Cancelamento de evento cancelado. \n")
+            else:
+                print("Evento não encontrado. \n")
+        except ValueError:
+            print("Entrada inválida. Por favor, insira um número válido.")
 
 # Função para excluir eventos existentes
 def excluir_eventos():
@@ -163,8 +171,12 @@ while True:
                     exibir_inscritos()
                     input("Pressione Enter para voltar ao menu dos coordenadores...")
                 elif escolha_opcao == 5:
-                    excluir_eventos()
+                    cancelar_eventos()
+                    input("Pressione Enter para voltar ao menu dos coordenadores...")
                 elif escolha_opcao == 6:
+                    excluir_eventos()
+                    input("Pressione Enter para voltar ao menu dos coordenadores...")
+                elif escolha_opcao == 7:
                     break
                 else:
                     print("Opção inválida. Por favor, escolha uma opção válida.")
@@ -178,14 +190,13 @@ while True:
                 escolha_opcao = int(input("Qual opção você deseja? "))
                 if escolha_opcao == 1:
                     exibir_evento()
-                    input("Pressione Enter para voltar ao menu principal...")
+                    input("Pressione Enter para voltar ao menu do aluno...")
                 elif escolha_opcao == 2:
                     inscrever_aluno()
-                    input("Pressione Enter para voltar ao menu principal...")
+                    input("Pressione Enter para voltar ao menu do aluno...")
                 elif escolha_opcao == 3:
                     break
                 else:
                     print("Opção inválida. Por favor, escolha uma opção válida.")
             except ValueError:
                 print("Entrada inválida. Por favor, insira um número.")
-

@@ -1,3 +1,5 @@
+#Estrutura Condicional Simples
+
 horas_trabalhadas = float(input('Digite a quantidade de horas: '))
 valor_hora = float(input('Digite o valor/hora: '))
 
